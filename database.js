@@ -1,33 +1,33 @@
 "use strict";
 
-const database = require('better-sqlite3')
-const logdb = new database('log.db')
+const Database = require('better-sqlite3');
 
-//prepare --> set up a database
-const stmt = logdb.prepare(`SELECT name FROM sqlite_master WHERE type='table' and 'accesslog';`)
-let row = stmt.get()
 
-if (row == undefined) {
-    console.log('Log database is empty. Creating log database...')
+const db = new Database('log.db');
 
-    const dbInit = `
-        CREATE TABLE access (
-            id INTEGER PRIMARY KEY,
-            remoteaddr VARCHAR,
-            remoteuser VARCHAR,
-            time VARCHAR,
-            method VARCHAR,
-            url VARCHAR,
-            httpversion NUMERIC,
-            secure VARCHAR,
-            status INTEGER,
-            referer VARCHAR,
-            useragent VARCHAR
-        )`
+const stmt = db.prepare(`SELECT name FROM sqlite_master WHERE type='table' and name='accesslog';`);
+let row = stmt.get();
+if (row === undefined) {
+        console.log('Your database appears to be empty. I will initialize it now.');
     
-    logdb.exec(dbInit)
-} else {
-    console.log('Log database exists.')
-}
-
-module.exports = logdb
+        const sqlInit = `
+            CREATE TABLE accesslog (
+                accesslogid INTEGER PRIMARY KEY, 
+                remoteaddr TEXT, 
+                remoteuser TEXT, 
+                time TEXT, 
+                method TEXT, 
+                url TEXT, 
+                protocol TEXT,
+                httpversion TEXT, 
+                status TEXT, 
+                referer TEXT,
+                useragent TEXT
+        );`
+    
+        db.exec(sqlInit);
+    } else {
+        console.log('Database exists.')
+    }
+    
+    module.exports = db
