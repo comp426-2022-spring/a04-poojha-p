@@ -34,6 +34,13 @@ if (args.help || args.h) {
     process.exit(0)
 }
 
+if (args.log == 'false') {
+    console.log("NOTICE: not creating file access.log")
+} else {
+    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+    app.use(morgan('combined', { stream: accessLog }))
+}
+
 // a03 part
 app.get('/app/', (req, res) => {
     res.statusCode = 200;
