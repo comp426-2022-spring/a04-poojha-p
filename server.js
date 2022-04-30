@@ -42,12 +42,18 @@ if (args.log == 'false') {
 }
 
 // a03 part
-app.get('/app/', (req, res) => {
+
+app.get("/app/", (req, res, next) => {
+    res.json({"message":"Your API works! (200)"});
+	res.status(200);
+});
+
+/**app.get('/app/', (req, res) => {
     res.statusCode = 200;
     res.statusMessage = 'OK';
     res.writeHead(res.statusCode, { 'Content-Type' : 'text/plain'});
     res.end(res.statusCode+ ' ' +res.statusMessage)
-});
+});**/
 
 app.get('/app/flip/', (req, res) => {
     res.statusCode = 200;
