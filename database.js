@@ -26,4 +26,8 @@ if (row === undefined) {
         );`
     
         db.exec(sqlInit);
+} else {
+    console.log('Database exists.')
 }
+
+module.exports = db
