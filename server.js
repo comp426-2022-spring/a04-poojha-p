@@ -61,6 +61,17 @@ app.use( (req, res, next) => {
     next();
   });
 
+  if ((args.debug == true) || (args.d == true)) {
+    app.get('/app/log/access', (req, res, next) => {
+      const statement = db.prepare('SELECT * FROM accesslog').all();
+      res.status(200).json(statement);
+  });
+
+  app.get('/app/error', (req, res, next) => {
+    throw new Error('Successful: Error.')
+  })
+}
+
 // a03 part
 
 app.get("/app/", (req, res, next) => {
